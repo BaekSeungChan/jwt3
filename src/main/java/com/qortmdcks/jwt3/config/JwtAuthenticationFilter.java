@@ -6,6 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -16,6 +21,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;  // JwtService 주입, JWT 관련 작업을 위해 사용됩니다.
+    private UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(
@@ -42,5 +48,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // TODO: 여기서 JWT의 유효성을 검증하고 사용자 인증 로직을 추가해야 합니다.
         // 예를 들어, 토큰의 만료 여부, 서명의 유효성 등을 검사할 수 있습니다.
+        if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+            if(jwtService.isTokenValid(jwt, userDetails)){
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        }
+        filterChain.doFilter(request, response);
     }
 }
