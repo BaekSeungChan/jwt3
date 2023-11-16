@@ -31,6 +31,11 @@
         </dependency>
         <!-- ... 기타 다른 스타터 의존성들 ... -->
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
         <!-- MySQL JDBC 드라이버. MySQL 데이터베이스와의 연결을 위해 사용 -->
         <dependency>
             <groupId>com.mysql</groupId>
@@ -62,6 +67,13 @@
             <version>0.11.5</version>
         </dependency>
         <!-- ... 기타 jjwt 관련 의존성들 ... -->
+
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- ... 기타 의존성들 ... -->
     </dependencies>
