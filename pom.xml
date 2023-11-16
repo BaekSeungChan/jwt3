@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion> <!-- Maven POM 파일 버전 -->
+
+    <parent>
+        <!-- Spring Boot 스타터 부모 POM. 공통 설정과 의존성 관리를 제공 -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.5</version> <!-- Spring Boot 버전 -->
+        <relativePath/> <!-- 리포지토리에서 부모 POM을 찾음 -->
+    </parent>
+
+    <groupId>com.qortmdcks</groupId> <!-- 프로젝트 그룹 ID -->
+    <artifactId>jwt3</artifactId> <!-- 프로젝트 아티팩트 ID -->
+    <version>0.0.1-SNAPSHOT</version> <!-- 프로젝트 버전 -->
+    <name>jwt3</name> <!-- 프로젝트 이름 -->
+    <description>jwt3</description> <!-- 프로젝트 설명 -->
+
+    <properties>
+        <java.version>17</java.version> <!-- 사용하는 자바 버전 -->
+    </properties>
+
+    <dependencies>
+        <!-- 의존성 선언 부분. 프로젝트에서 사용되는 라이브러리들을 명시 -->
+
+        <!-- Spring Boot Starter 의존성들은 기본적인 구성을 제공 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId> <!-- JPA를 위한 스프링 부트 스타터 -->
+        </dependency>
+        <!-- ... 기타 다른 스타터 의존성들 ... -->
+
+        <!-- MySQL JDBC 드라이버. MySQL 데이터베이스와의 연결을 위해 사용 -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Lombok 라이브러리. 자바 객체의 보일러플레이트 코드를 줄이는데 사용 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- JWT 처리를 위한 jjwt 라이브러리 -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <!-- ... 기타 jjwt 관련 의존성들 ... -->
+
+        <!-- ... 기타 의존성들 ... -->
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- 빌드 플러그인 설정. 프로젝트 빌드 과정을 커스터마이즈하는 데 사용 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 스프링 부트 애플리케이션의 Docker 이미지 생성을 위한 설정 -->
+                    <image>
+                        <builder>paketobuildpacks/builder-jammy-base:latest</builder>
+                    </image>
+                    <!-- Lombok을 제외한 다른 의존성들을 포함 -->
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
