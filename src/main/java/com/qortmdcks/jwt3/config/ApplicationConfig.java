@@ -20,7 +20,9 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return username -> userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not email"));
+
+        return username -> userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not email"));
     }
 
     @Bean
@@ -28,9 +30,8 @@ public class ApplicationConfig {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-
         return authenticationProvider;
-    }
+    } // 로그인 프로세스
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
